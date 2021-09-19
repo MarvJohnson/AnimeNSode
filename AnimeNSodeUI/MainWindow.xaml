@@ -1,0 +1,70 @@
+﻿<Window x:Class="AnimeNSodeUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AnimeNSodeUI"
+        xmlns:core="clr-namespace:AnimeNSodeCore.ViewModels;assembly=AnimeNSodeCore"
+        mc:Ignorable="d"
+        Title="AnimNSode" Height="450" Width="800"
+        ResizeMode="NoResize"
+        Background="#181818"
+        x:Name="MWindow">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="FirstColumn" Width="300"/>
+            <ColumnDefinition x:Name="SecondColumn" Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border x:Name="AnimeListerBorder" Grid.Column="0" Margin="10,10,0,72">
+            <ListBox x:Name="AnimeLister" Background="Transparent" BorderThickness="0" SelectedItem="{Binding Path=RSSMediaLister.SelectedListItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Path=RSSMediaLister.List}" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#303030" BorderThickness="1" CornerRadius="2" Padding="4" Margin="0,2,0,2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Path=Title}" Grid.Column="0" Foreground="#FFFFFF" FontWeight="Bold"/>
+                                <Button Content="X" Command="{Binding Path=DataContext.DeleteRecordCommand, Source={x:Reference Name=MWindow}}" CommandParameter="{Binding}" FontWeight="Bold" Foreground="#FFFFFF" BorderThickness="0" Background="Transparent" HorizontalAlignment="Right" Grid.Column="1" Width="20"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <Button x:Name="AddAnimeButton" Content="Add Anime" FontWeight="Bold" Foreground="#aaaaaa" Background="#303030"  BorderThickness="0" Command="{Binding ShowRSSMediaCreationWindowCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="52" Width="226" Margin="42,0,0,10">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Border x:Name="AnimeRSSLister" BorderThickness="0" Grid.Column="1" Margin="10">
+            <ScrollViewer>
+                <ItemsControl ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="AnimeFeedList" ItemsSource="{Binding Path=RSSFeedLister.List}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Padding="4,0,4,0" BorderThickness="0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#303030" BorderThickness="1" CornerRadius="2" Height="100" Padding="5" Margin="0,4,0,4">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Name="AnimeTitle" Text="{Binding Path=Title}" Grid.Row="0" FontWeight="Bold" FontSize="16" Foreground="#ffffff" TextWrapping="Wrap"/>
+                                    <TextBlock Padding="4,0,0,0" Grid.Row="1">
+                                    <Hyperlink Name="EpisodeHyperlink" Command="{Binding Path=DataContext.OpenMediaLinkCommand, Source={x:Reference Name=MWindow}}" CommandParameter="{Binding Path=EpisodeLink}" FontSize="12">
+                                        <Run Text="{Binding Path=EpisodeLink}"/>
+                                    </Hyperlink>
+                                    </TextBlock>
+                                    <TextBlock Name="Description" Text="{Binding Path=Description}" Grid.Row="2" MaxWidth="400" Foreground="#ffffff" TextWrapping="Wrap" HorizontalAlignment="Left" Padding="4,0,0,0"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>
